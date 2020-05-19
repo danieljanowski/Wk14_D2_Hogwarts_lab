@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CharacterSelector = (props) => {
-
+        if (!props.characters) return null;
         const options = props.characters.map (
             character => {
                 return <option

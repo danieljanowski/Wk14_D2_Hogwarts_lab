@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import CharacterSelector from '../components/CharacterSelector.js'
 import CharacterDetail from '../components/CharacterDetail.js';
-// import HouseSelector from '../components/HouseSelector.js';
+import HouseSelector from '../components/HouseSelector.js';
 
 class HogwartsContainer extends Component {
     constructor(props){
@@ -9,10 +9,10 @@ class HogwartsContainer extends Component {
         this.state = {
             characters: [],
             selectedCharacter: '',
-            selectedHouse: ''
+            filteredCharacters: ''
         };
         this.handleCharacterSelected = this.handleCharacterSelected.bind(this);
-        // this.handleHouseSelected = this.handleHouseSelected.bind(this);
+        this.handleHouseSelected = this.handleHouseSelected.bind(this);
     }
 
     handleCharacterSelected(name){
@@ -20,7 +20,7 @@ class HogwartsContainer extends Component {
     }
 
     handleHouseSelected(house){
-        this.setState({selectedHouse: house})
+        this.setState({filteredCharacters:  this.state.characters.filter(character => { return character.house === house })});  
     }
 
         componentDidMount(){
@@ -33,15 +33,9 @@ class HogwartsContainer extends Component {
     
     render() {
 
-        // if (!this.state.characters.length) {
-        //     return <h2>Loading...</h2>
-        //   };
-
-        // const filteredCharacters = this.state.characters.map(
-        //     character => {
-        //         return character.house === this.state.selectedHouse
-        //     }
-        // );    
+        if (!this.state.characters) {
+            return <h2>Loading...</h2>
+          };  
 
         const selectedCharacter = this.state.characters.find(
             character => {
@@ -51,13 +45,12 @@ class HogwartsContainer extends Component {
 
         return (
             <>
-                {/* <HouseSelector onHouseSelected = {this.handleHouseSelected} /> */}
+                <HouseSelector onHouseSelected = {this.handleHouseSelected} />
                 <CharacterSelector 
-                characters = {this.state.characters}
+                characters = {this.state.filteredCharacters}
                 onCharacterSelected = {this.handleCharacterSelected}
                 ></CharacterSelector>
                 <CharacterDetail character = {selectedCharacter} />
-
             </>
         );
     }
